@@ -6,7 +6,6 @@ const ErrorResponse = require('../utils/errorResponse')
 // @route   GET /api/v1/bootcamps
 // @access  Public
 exports.getBootcamps = asyncHandler(async (req, res, next) => { // Instead of using try catch, you can use this asyncHandler function
-    
     const getAllBootcamps = await Bootcamp.find()
 
     if (!getAllBootcamps) {

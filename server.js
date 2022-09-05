@@ -9,17 +9,20 @@ dotenv.config({ path: './config/config.env' })
 
 // Route files
 const bootcampsRoutes = require('./routes/bootcamps')
+const errorHandler = require('./middleware/error')
 const connectDB = require('./config/db')
 
 const app = express()
 const PORT = process.env.PORT || 5000
 
 // Middleware
+app.use(express.json())
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('combined'))
 }
 
 app.use('/api/v1/bootcamps', bootcampsRoutes)
+app.use(errorHandler)
 
 if(cluster.isMaster) {
     console.log('Master has been started')

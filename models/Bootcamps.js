@@ -113,7 +113,7 @@ BootcampsSchema.pre('save', async function(next) {
     const loc = await geocoder.geocode(this.address)
     this.location = {
         type: "Point",
-        // Use coordinates: [loc[0].latitude, loc[0].longitude] for US address. Use coordinates: [loc[0].longitude, loc[0].latitude] for Indonesian address
+        // Use coordinates: [loc[0].latitude, loc[0].longitude] or coordinates: [loc[0].longitude, loc[0].latitude] for US address. Use coordinates: [loc[0].longitude, loc[0].latitude] for Indonesian address
         coordinates: [loc[0].longitude, loc[0].latitude],
         formattedAddress: loc[0].formattedAddress,
         street: loc[0].streetName,

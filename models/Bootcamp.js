@@ -7,7 +7,7 @@ const BootcampsSchema = mongoose.Schema({
         type: String,
         required: [true, 'Please add a name'],
         unique: true,
-        trim: true,
+        trim: true, // trim in mongoose use to remove the white spaces from the strings.
         maxlength: [50, 'Name can not be more than 50 characters']
     },
     slug: String,

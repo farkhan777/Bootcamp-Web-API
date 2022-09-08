@@ -1,5 +1,5 @@
 const asyncHandler = require('../middleware/async')
-const Bootcamp = require('../models/Bootcamps')
+const Bootcamp = require('../models/Bootcamp')
 const ErrorResponse = require('../utils/errorResponse')
 const geocoder = require('../utils/geocoder')
 
@@ -49,7 +49,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => { // Instead of us
 
     // Pagination
     const DEFAULT_PAGE_NUMBER = 1
-    const DEFAULT_PAGE_LIMIT = 2
+    const DEFAULT_PAGE_LIMIT = 1
 
     if (req.query.page <= 0) {
         req.query.page = 1

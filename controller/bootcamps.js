@@ -47,13 +47,46 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => { // Instead of us
         query = query.sort('-createdAt')
     }
 
+    // Pagination
+    const DEFAULT_PAGE_NUMBER = 1
+    const DEFAULT_PAGE_LIMIT = 2
+
+    if (req.query.page <= 0) {
+        req.query.page = 1
+    }
+    
+    const page = Math.abs(req.query.page) || DEFAULT_PAGE_NUMBER
+    const limit = Math.abs(req.query.limit) || DEFAULT_PAGE_LIMIT
+    const startIndex = (page - 1) * limit
+    const endIndex = page * limit
+    const total = await Bootcamp.countDocuments()
+
+    query = query.skip(startIndex).limit(limit)
+
     const getAllBootcamps = await query
+
+    // Pagination result
+    const pagination = {}
+
+    if (endIndex < total) {
+        pagination.next = {
+            page: page + 1,
+            limit
+        }
+    }
+
+    if (startIndex > 0) {
+        pagination.prev = {
+            page: page - 1,
+            limit
+        }
+    }
 
     if (!getAllBootcamps) {
         return next(new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404))
     }
 
-    res.status(201).json({success: true, count: getAllBootcamps.length, data: getAllBootcamps})
+    res.status(201).json({success: true, count: getAllBootcamps.length, pagination: pagination, data: getAllBootcamps})
 })
 
 // @desc    Get single bootcamp

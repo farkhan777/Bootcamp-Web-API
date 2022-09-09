@@ -49,7 +49,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => { // Instead of us
 
     // Pagination
     const DEFAULT_PAGE_NUMBER = 1
-    const DEFAULT_PAGE_LIMIT = 1
+    const DEFAULT_PAGE_LIMIT = 0
 
     if (req.query.page <= 0) {
         req.query.page = 1

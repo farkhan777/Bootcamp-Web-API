@@ -9,6 +9,7 @@ dotenv.config({ path: './config/config.env' })
 
 // Route files
 const bootcampsRoutes = require('./routes/bootcamps')
+const coursesRoutes = require('./routes/courses')
 const errorHandler = require('./middleware/error')
 const connectDB = require('./config/db')
 
@@ -22,6 +23,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use('/api/v1/bootcamps', bootcampsRoutes)
+app.use('/api/v1/courses', coursesRoutes)
 app.use(errorHandler)
 
 if(cluster.isMaster) {

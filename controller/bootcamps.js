@@ -1,5 +1,6 @@
 const asyncHandler = require('../middleware/async')
 const Bootcamp = require('../models/Bootcamp')
+const Course = require('../models/Course')
 const ErrorResponse = require('../utils/errorResponse')
 const geocoder = require('../utils/geocoder')
 
@@ -61,7 +62,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => { // Instead of us
     const endIndex = page * limit
     const total = await Bootcamp.countDocuments()
 
-    query = query.skip(startIndex).limit(limit)
+    query = query.skip(startIndex).limit(limit).populate('course')
 
     const getAllBootcamps = await query
 
@@ -93,7 +94,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => { // Instead of us
 // @route   GET /api/v1/bootcamps/:id
 // @access  Public
 exports.getBootcamp = asyncHandler(async (req, res, next) => {
-    const getBootcamp = await Bootcamp.findById(req.params.id)
+    const getBootcamp = await Bootcamp.findById(req.params.id).populate('course')
 
     if (!getBootcamp) {
         // res.status(400).json({success: false})
@@ -136,11 +137,28 @@ exports.updateBootcamp = asyncHandler(async (req, res, next) => {
 // @route   DELETE /api/v1/bootcamps/:id
 // @access  Private
 exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
-    const deleteBootcamp = await Bootcamp.findByIdAndDelete(req.params.id)
+    const deleteBootcamp = await Bootcamp.findById(req.params.id)
+
+    // Another way to delete table that has relations
+    // Bootcamp.findByIdAndDelete(req.params.id).then( async (bootcamp) => {
+    //     if (bootcamp) {
+    //         await bootcamp.populate('course')
+    //         await bootcamp.course.map(async (courses) => {
+    //             await Course.findByIdAndDelete(courses)
+    //         })
+    //     } else {
+    //         return res.status(400).json({
+    //             success: false,
+    //             message: 'Bootcamp not found'
+    //         })
+    //     }
+    // })
 
     if (!deleteBootcamp) {
         return next(new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404))
     }
+
+    deleteBootcamp.remove()
     
     res.status(200).json({success: true, msg: `Delete bootcamp ${req.params.id}`})
 })

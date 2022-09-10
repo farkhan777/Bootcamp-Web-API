@@ -9,7 +9,7 @@ const errorHandler = (err, req, res, next) => {
     console.log(err)
 
     if (err.name === 'CastError') {
-        const message = `Bootcamp not found with id of ${err.value}`
+        const message = `Idvalid id of ${err.value}`
         error = new ErrorResponse(message, 404)
     }
 

@@ -189,3 +189,8 @@ exports.getBootcampsInRadius = asyncHandler(async (req, res, next) => {
         data: bootcamps
     })
 })
+
+// @desc    Upadte bootcamp photo
+// @route   UPDATE /api/v1/bootcamps/:bootcampId/photo
+// @access  Private
+// exports.updateBootcampPhoto = 

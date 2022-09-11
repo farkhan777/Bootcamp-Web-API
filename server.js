@@ -21,6 +21,7 @@ app.use(express.json())
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('combined'))
 }
+app.use('/public/uploads', express.static(__dirname + '/public/uploads'))
 
 app.use('/api/v1/bootcamps', bootcampsRoutes)
 app.use('/api/v1/courses', coursesRoutes)

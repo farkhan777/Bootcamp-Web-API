@@ -226,16 +226,16 @@ exports.updateBootcampPhoto = async (req, res, next) => {
     const checkExistBootcamp = await Bootcamp.findById(req.params.bootcampId)
     if(!checkExistBootcamp) return res.status(400).json({message: 'Invalid bootcamp'})
 
-    let imagepath
+    let photopath
     const checkIfTheIsFile = req.file
 
     if (!checkIfTheIsFile) {
-        return res.status(404).json({message: 'Image does not exist'})
+        return res.status(404).json({message: 'Photo does not exist'})
     }
 
     if (checkIfTheIsFile) {
         const filePath = './public/uploads'
-        const splittedFile = checkExistBootcamp.image.split('/')
+        const splittedFile = checkExistBootcamp.photo.split('/')
         // console.log(`${filePath}/${splittedFile[splittedFile.length - 1]}`)
         fs.unlink(`${filePath}/${splittedFile[splittedFile.length - 1]}`, function(err) {
             if(err && err.code == 'ENOENT') {
@@ -250,13 +250,13 @@ exports.updateBootcampPhoto = async (req, res, next) => {
         })
         const fileName = req.file.filename
         const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`
-        imagepath = `${basePath}${fileName}`
+        photopath = `${basePath}${fileName}`
     } else {
-        imagepath = checkExistBootcamp.image
+        photopath = checkExistBootcamp.photo
     }
 
     const updateBootcamp = await Bootcamp.findByIdAndUpdate(req.params.bootcampId,{ 
-        image: imagepath 
+        photo: photopath 
     }, {
         new: true
     })
@@ -268,4 +268,4 @@ exports.updateBootcampPhoto = async (req, res, next) => {
     res.send(updateBootcamp)
 }
 
-exports.uploadOptions = uploadOptions.single('image')
+exports.uploadOptions = uploadOptions.single('photo')

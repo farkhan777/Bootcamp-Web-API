@@ -8,25 +8,17 @@ const ErrorResponse = require('../utils/errorResponse')
 // @route   GET /api/v1/bootcamps/:bootcampsId/courses
 // @access  Public
 exports.getCourses = asyncHandler( async (req, res, next) => {
-    let query
-
     if (req.params.bootcampsId) {
-        query = Course.find({ bootcamp: req.params.bootcampsId }).populate({path: 'bootcamp'})
+        const courses = await Course.find({ bootcamp: req.params.bootcampsId })
+
+        return res.status(200).json({
+            success: true,
+            count: courses.length,
+            data: courses
+        })
     } else {
-        query = Course.find().populate({path: 'bootcamp', select: 'name description'})
+        res.status(200).json(res.advancedResults)
     }
-
-    const course = await query
-
-    if (!course) {
-        return next(new ErrorResponse(`Course not found`, 404))
-    }
-
-    res.status(200).json({
-        success: true,
-        count: course.length,
-        data: course
-    })
 })
 
 // @desc    Get single course

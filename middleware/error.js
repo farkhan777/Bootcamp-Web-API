@@ -23,6 +23,10 @@ const errorHandler = (err, req, res, next) => {
         error = new ErrorResponse(message, 400)
     }
 
+    if (err.name === 'TypeError') {
+        error = new ErrorResponse(err, 400)
+    }
+
     res.status(error.statusCode).json({
         success: false,
         error: error.message || 'Server Error'

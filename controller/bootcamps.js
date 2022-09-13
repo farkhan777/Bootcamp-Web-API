@@ -84,14 +84,21 @@ exports.createBootcamp = asyncHandler(async (req, res, next) => {
 // @route   UPDATE /api/v1/bootcamps/:id
 // @access  Private
 exports.updateBootcamp = asyncHandler(async (req, res, next) => {
-    const updateBootcamp = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-        runValidators: true
-    })
-    
+    let updateBootcamp = await Bootcamp.findById(req.params.id)
+
     if (!updateBootcamp) {
         return next(new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404))
     }
+
+    // Make sure user is bootcamp owner
+    if (updateBootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+        return next(new ErrorResponse(`User ${req.params.id}is not authorized to update this`, 401))
+    }
+
+    updateBootcamp = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true
+    })
     
     res.status(200).json({success: true, msg: `Update bootcamp ${req.params.id}`})
 })
@@ -119,6 +126,11 @@ exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
 
     if (!deleteBootcamp) {
         return next(new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404))
+    }
+
+    // Make sure user is bootcamp owner
+    if (deleteBootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+        return next(new ErrorResponse(`User ${req.params.id}is not authorized to delete this`, 401))
     }
 
     deleteBootcamp.remove()
@@ -159,6 +171,11 @@ exports.getBootcampsInRadius = asyncHandler(async (req, res, next) => {
 exports.updateBootcampPhoto = async (req, res, next) => {
     const checkExistBootcamp = await Bootcamp.findById(req.params.bootcampId)
     if(!checkExistBootcamp) return res.status(400).json({message: 'Invalid bootcamp'})
+
+    // Make sure user is bootcamp owner
+    if (checkExistBootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+        return next(new ErrorResponse(`User ${req.params.id}is not authorized to update this`, 401))
+    }
 
     let photopath
     const checkIfTheIsFile = req.file

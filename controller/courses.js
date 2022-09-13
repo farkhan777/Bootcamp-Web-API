@@ -40,10 +40,18 @@ exports.getCourse = asyncHandler(async (req, res, next) => {
 // @access  Private
 exports.createCourse = asyncHandler(async (req, res, next) => {
     req.body.bootcamp = req.params.bootcampsId
+    // Add user to req.body
+    // console.log(req.user) req.user is from auth middleware
+    req.body.user = req.user.id
 
     const existBootcamp = await Bootcamp.findById(req.params.bootcampsId)
     if (!existBootcamp) {
         return next(new ErrorResponse(`Bootcamp not found with id of ${req.params.bootcampsId}`, 404))
+    }
+
+    // Make sure user is bootcamp owner
+    if (existBootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+        return next(new ErrorResponse(`User ${req.params.id}is not authorized create this`, 401))
     }
 
     const course = await Course.create(req.body)
@@ -59,7 +67,14 @@ exports.createCourse = asyncHandler(async (req, res, next) => {
 // @route   POST /api/v1/courses/:id
 // @access  Private
 exports.updateCourse = asyncHandler(async (req, res, next) => {
-    const course = await Course.findByIdAndUpdate(req.params.id, req.body, 
+    let course = await Course.findById(req.params.id)
+
+    // Make sure user is bootcamp owner
+    if (course.user.toString() !== req.user.id && req.user.role !== 'admin') {
+        return next(new ErrorResponse(`User ${req.params.id}is not authorized to update this`, 401))
+    }
+
+    course = await Course.findByIdAndUpdate(req.params.id, req.body, 
         {
             new: true,
             runValidators: true 
@@ -78,6 +93,11 @@ exports.updateCourse = asyncHandler(async (req, res, next) => {
 // @access  Private
 exports.deleteCourse = asyncHandler(async (req, res, next) => {
     const deleteCourse = await Course.findById(req.params.id)
+
+    // Make sure user is bootcamp owner
+    if (deleteCourse.user.toString() !== req.user.id && req.user.role !== 'admin') {
+        return next(new ErrorResponse(`User ${req.params.id}is not authorized to delete this`, 401))
+    }
 
     if (!deleteCourse) {
         return next(new ErrorResponse(`Course not found with id of ${req.params.id}`, 404))

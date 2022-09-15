@@ -3,7 +3,6 @@ const User = require('../models/User')
 const ErrorResponse = require('../utils/errorResponse')
 const sendEmail = require('../utils/sendEmail')
 const crypto = require('crypto')
-const errorHandler = require('../middleware/error')
 
 // @desc    Register user
 // @route   POST /api/v1/auth/register

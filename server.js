@@ -13,6 +13,7 @@ const bootcampsRoutes = require('./routes/bootcamps')
 const coursesRoutes = require('./routes/courses')
 const authRoutes = require('./routes/auth')
 const usersRoutes = require('./routes/users')
+const reviewsRoutes = require('./routes/reviews')
 const errorHandler = require('./middleware/error')
 const connectDB = require('./config/db')
 
@@ -31,6 +32,7 @@ app.use('/api/v1/bootcamps', bootcampsRoutes)
 app.use('/api/v1/courses', coursesRoutes)
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/users', usersRoutes)
+app.use('/api/v1/reviews', reviewsRoutes)
 app.use(errorHandler)
 
 if(cluster.isMaster) {

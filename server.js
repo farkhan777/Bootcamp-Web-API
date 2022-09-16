@@ -4,6 +4,12 @@ const os = require('os')
 const morgan = require('morgan')
 const dotenv = require('dotenv')
 const cookieParser = require('cookie-parser')
+const mongoSanitize = require('express-mongo-sanitize')
+const helmet = require("helmet")
+const xss = require('xss-clean')
+const rateLimit = require('express-rate-limit')
+const hpp = require('hpp')
+const cors = require('cors')
 
 // Load env vars
 dotenv.config({ path: './config/config.env' })
@@ -21,8 +27,27 @@ const app = express()
 const PORT = process.env.PORT || 5000
 
 // Middleware
+app.use(cors())
+app.options('*', cors())
+
 app.use(express.json())
 app.use(cookieParser())
+app.use(mongoSanitize())
+app.use(helmet())
+app.use(xss())
+
+// Rate limiting
+const limiter = rateLimit({
+    windowMs: 10 * 60 * 1000, // 10ms
+    max: 100 // maximum 100 request in 10ms
+})
+
+app.use(limiter)
+
+// Prevent http param pollution
+app.use(hpp())
+
+
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('combined'))
 }

@@ -14,7 +14,7 @@ const swaggerjsdoc = require('swagger-jsdoc')
 const swaggerui = require('swagger-ui-express')
 
 // Load env vars
-dotenv.config({ path: './config/config.env' })
+dotenv.config({ path: '.env' })
 
 // Route files
 const bootcampsRoutes = require('./routes/bootcamps')

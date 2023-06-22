@@ -6,6 +6,7 @@ const MONGO_URI = process.env.MONGO_URI
 
 const connectDB = async () => {
     console.log(MONGO_URI)
+    console.log(process.env.NODE_ENV)
     const conn = await mongoose.connect(MONGO_URI)
 
     console.log(`MongoDB Connected ${conn.connection.host}`)

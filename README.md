@@ -1,4 +1,5 @@
 # Bootcamp App API Project
+Backend API for Bootcamp Web application, which is a bootcamp directory website made with Express to manage bootcamps, course, users, and authentication
 
 ## Getting Started
 

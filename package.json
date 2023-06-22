@@ -27,6 +27,8 @@
     "nodemailer": "^6.7.8",
     "nodemon": "^2.0.19",
     "slugify": "^1.6.5",
+    "swagger-jsdoc": "5.0.1",
+    "swagger-ui-express": "^4.6.3",
     "xss-clean": "^0.1.1"
   }
 }

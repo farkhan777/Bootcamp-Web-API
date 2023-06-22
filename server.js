@@ -2,7 +2,7 @@ const express = require('express')
 const cluster = require('cluster')
 const os = require('os')
 const morgan = require('morgan')
-require('dotenv').config();
+require('dotenv/config')
 const cookieParser = require('cookie-parser')
 const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require("helmet")

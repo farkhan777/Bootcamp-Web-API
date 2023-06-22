@@ -2,7 +2,7 @@ const express = require('express')
 const cluster = require('cluster')
 const os = require('os')
 const morgan = require('morgan')
-const dotenv = require('dotenv')
+require('dotenv').config();
 const cookieParser = require('cookie-parser')
 const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require("helmet")
@@ -14,7 +14,7 @@ const swaggerjsdoc = require('swagger-jsdoc')
 const swaggerui = require('swagger-ui-express')
 
 // Load env vars
-dotenv.config({ path: '.env' })
+// dotenv.config({ path: '.env' })
 
 // Route files
 const bootcampsRoutes = require('./routes/bootcamps')

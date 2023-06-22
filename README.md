@@ -1,6 +1,9 @@
 # Bootcamp App API Project
 Backend API for Bootcamp Web application, which is a bootcamp directory website made with Express to manage bootcamps, course, users, and authentication
 
+# Bootcamp App API Project Documentation using Postman
+https://documenter.getpostman.com/view/21759373/2s93z58jDa
+
 ## Getting Started
 
 1. Ensure you have Node.js installed.

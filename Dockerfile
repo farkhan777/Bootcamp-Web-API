@@ -1,6 +1,7 @@
 FROM node:lts-alpine
 
 WORKDIR /app
+ADD --chmod=777 files* /app/
 
 COPY package.json ./
 
@@ -11,7 +12,6 @@ COPY ./ ./
 
 USER node
 
-ADD --chmod=777 files* /app/
 CMD ["npm", "start"]
 
 EXPOSE 5000

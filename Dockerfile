@@ -11,7 +11,7 @@ COPY ./ ./
 
 USER root
 
-RUN chmod -R 777 public
+RUN chmod -R 755 public
 
 USER node
 

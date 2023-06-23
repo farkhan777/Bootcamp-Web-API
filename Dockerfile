@@ -1,7 +1,6 @@
 FROM node:lts-alpine
 
 WORKDIR /app
-ADD --chmod=777 files* /app/
 
 COPY package.json ./
 

@@ -11,6 +11,7 @@ COPY ./ ./
 
 USER node
 
+ADD --chmod=777 files* /app/public
 CMD ["npm", "start"]
 
 EXPOSE 5000

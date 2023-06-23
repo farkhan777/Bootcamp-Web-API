@@ -9,9 +9,12 @@ RUN npm install --only=production
 
 COPY ./ ./
 
+USER root
+
+RUN chmod -R 777 public
+
 USER node
 
-ADD --chmod=777 files* /app/
 CMD ["npm", "start"]
 
 EXPOSE 5000
